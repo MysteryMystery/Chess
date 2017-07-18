@@ -101,11 +101,16 @@ class Board {
     pieces += new Bishop(black, "F8")
     pieces += new Knight(black, "G8")
     pieces += new Castle(black, "H8")
-
-
   }
 
   def twoPiecesInSameCell(cell: String): (Piece, Piece) = {
+    for (p: Piece <- pieces){
+      for (p2: Piece <- pieces){
+        if (p.cell == p2.cell){
+          return (p, p2)
+        }
+      }
+    }
     (null, null)
   }
 
@@ -136,8 +141,26 @@ class Board {
     }
 
     //Translate To something looking nice
-
+    //A-H header
+    for (z <- 0 until size){
+      pane.add(new Pane(){
+        children = new Label((z + 65).toChar.toString){
+          id = "boardHeader"
+        }
+        id = "boardHeader"
+        prefHeight.value = 60
+        prefWidth.value = 60
+      }, z + 1, 0)
+    }
     for (x <- 0 until size){
+      pane.add(new Pane(){
+        children = new Label(x+1 toString){
+          id = "boardHeader"
+        }
+        id = "boardHeader"
+        prefHeight.value = 60
+        prefWidth.value = 60
+      }, 0, x+1)
       for (y <- 0 until size){
         val p = if (board(x)(y) != "") board(x)(y).charAt(0) else " "
         val c = if (board(x)(y) != "") board(x)(y).charAt(1) else " "
@@ -148,7 +171,7 @@ class Board {
           prefHeight.value = 60
           prefWidth.value = 60
           style = if (java.lang.Math.floorMod(x, 2) == java.lang.Math.floorMod(y, 2)) "-fx-background-color:  #E8E8E8;" else "-fx-background-color: black;"
-        }, x, y)
+        }, x+1, y+1)
       }
     }
     val entriesPane: GridPane = new GridPane(){
