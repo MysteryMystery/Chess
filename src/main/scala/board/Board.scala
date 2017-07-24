@@ -10,6 +10,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.layout.{Background, GridPane, Pane}
 import util.Colours._
 import util.{Colours, Helper}
+import util.ImplicitHelper._
 
 import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label, TextField}
@@ -40,7 +41,7 @@ class Board {
           refresh()
         }
         else{
-          warningText.text = s"Moving to ${coordsFromEntry.text.value} is not valid!"
+          warningText.text = s"Moving to ${coordsToEntry.text.value} is not valid!"
         }
       }else{
         warningText.text = s"Your piece is not at ${coordsFromEntry.text.value}"
@@ -209,6 +210,7 @@ class Board {
   }
 
   def refresh(): Unit = {
+    coordsToEntry.wipe; coordsFromEntry.wipe
     Chess.primaryStage.scene = getDisplayScene
   }
 }

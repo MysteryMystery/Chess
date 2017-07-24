@@ -11,8 +11,9 @@ trait Piece {
     if(isValidMove(getCurrentPosition, coordinate)){
       cell = coordinate
       true
+    }else{
+      false
     }
-    false
   }
 
   protected def isValidMove(from: String, to: String): Boolean
@@ -23,7 +24,8 @@ trait Piece {
     if (Chess.board.twoPiecesInSameCell(cell) != (null, null)){
       //remove the piece of opposing colour
       true
+    }else{
+      false
     }
-    false
   }
 }

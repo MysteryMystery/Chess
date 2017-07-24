@@ -14,7 +14,7 @@ class Pawn(override val colour: Char, override var cell: String) extends Piece{
 
   override protected def isValidMove(from: String, to: String): Boolean = {
     var diff = if (colour == Colours.white) Helper.letterToNum(to.charAt(1)) - Helper.letterToNum(from.charAt(1)) else Helper.letterToNum(from.charAt(1)) - Helper.letterToNum(to.charAt(1))
-    if ((((moveCount == 0 && diff == 2) || diff == 1 ) && !pieceInFront) || ((pieceDiagRight && to == getCoordDiagRight) || (pieceDiagLeft && to== getCoordDiagLeft))) {
+    if ((((moveCount == 0 && diff == 2) || diff == 1 ) && !pieceInFront) || (pieceDiagRight && to == getCoordDiagRight) || (pieceDiagLeft && to== getCoordDiagLeft)) {
       moveCount += 1
       true
     }else{
@@ -36,7 +36,7 @@ class Pawn(override val colour: Char, override var cell: String) extends Piece{
   }
 
   def getCoordDiagRight: String = {
-    ""
+    if (colour == white) s"${Helper.numToLetter(Helper.letterToNum(cell.charAt(0)) + 2)}${Integer.parseInt(cell.charAt(1).toString)+1}" else s"${Helper.numToLetter(Helper.letterToNum(cell.charAt(0)) + 2)}${Integer.parseInt(cell.charAt(1).toString)-1}"
   }
 
   def getCoordDiagLeft: String = {
