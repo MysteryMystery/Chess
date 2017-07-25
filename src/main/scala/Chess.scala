@@ -1,5 +1,6 @@
 import board.Board
 import util.Helper
+import web.WebRequest
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
@@ -19,4 +20,7 @@ object launch extends JFXApp{
   }
   Chess.primaryStage = stage
   stage.scene = Chess.board.getDisplayScene
+
+  new WebRequest get()
+  new WebRequest post(Chess.board)
 }

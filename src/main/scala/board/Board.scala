@@ -20,6 +20,7 @@ import scalafx.scene.text.Text
   * Created by james on 13/07/17.
   */
 class Board {
+  @SerialVersionUID(123L)
   val pieces: ListBuffer[Piece] = ListBuffer[Piece]()
   val size = 8
   var board: Array[Array[String]] = Array[Array[String]]()
@@ -33,6 +34,7 @@ class Board {
     promptText = "e.g. A2"
   }
   val submitButton: Button = new Button("Move!"){
+    defaultButton = true
     onAction = (event: ActionEvent) => {
       println(s"${coordsFromEntry.text.value} -> ${coordsToEntry.text.value}")
       val p = getPieceAt(coordsFromEntry.text.value)
