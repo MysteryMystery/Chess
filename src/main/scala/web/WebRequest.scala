@@ -4,6 +4,8 @@ import java.io.{ByteArrayOutputStream, ObjectOutputStream}
 
 import collection.JavaConverters._
 import java.net.{HttpURLConnection, URL}
+import java.io.ByteArrayInputStream
+import java.io.ObjectInputStream
 
 import board.Board
 
@@ -32,13 +34,15 @@ class WebRequest {
   def post(board: Board, url: String = serverIP,
            connectTimeout: Int = 5000,
            readTimeout: Int = 5000,
-           requestMethod: String = "POST") = {
+           requestMethod: String = "POST") =
+  {
 
     Http(url)
       .postData(serialise(board.board))
       .header("Content-Type", "text/plain")
       .header("Charset", "UTF-8")
-      .option(HttpOptions.readTimeout(1000000))
+      .option(HttpOptions.readTimeout(readTimeout))
+      .option(HttpOptions.connTimeout(connectTimeout))
       .asString
   }
 
@@ -55,8 +59,6 @@ class WebRequest {
   }
 
   def deDerialise(x: String): Array[Array[String]] = {
-    import java.io.ByteArrayInputStream
-    import java.io.ObjectInputStream
     try {
       val b = x.getBytes
       val bi = new ByteArrayInputStream(b)
