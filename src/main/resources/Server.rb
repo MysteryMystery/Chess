@@ -3,7 +3,7 @@
 
 require 'socket'
 
-$BOARDFILE = "board.txt"
+$BOARDFILE = "server/board.txt"
 
 def getBoard()
   content = ""
@@ -47,7 +47,8 @@ loop {
   STDERR.puts ""
 
   headers = {}
-  while line = socket.gets.split(" ", 2) do
+  #while line = socket.gets.split(" ", 2) do
+  while (line = socket.gets).chomp != '' do
     break if line[0] == ""
     headers[line[0].chop] = line[1].strip
   end

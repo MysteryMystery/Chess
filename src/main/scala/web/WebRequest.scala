@@ -37,13 +37,17 @@ class WebRequest {
            requestMethod: String = "POST") =
   {
 
-    Http(url)
-      .postData(serialise(board.board))
-      .header("Content-Type", "text/plain")
-      .header("Charset", "UTF-8")
-      .option(HttpOptions.readTimeout(readTimeout))
-      .option(HttpOptions.connTimeout(connectTimeout))
-      .asString
+    try{
+      Http(url)
+        .postData(serialise(board.board))
+        .header("Content-Type", "text/plain")
+        .header("Charset", "UTF-8")
+        //.option(HttpOptions.readTimeout(readTimeout))
+        //.option(HttpOptions.connTimeout(connectTimeout))
+        .asString
+    }catch{
+      case e: java.net.SocketTimeoutException => ""
+    }
   }
 
   def serialise(x: Object): String = {

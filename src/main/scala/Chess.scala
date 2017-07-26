@@ -1,9 +1,11 @@
 import board.Board
+import server.ServerLauncher
 import util.Helper
 import web.WebRequest
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
+import sys.process._
 
 /**
   * Created by james on 13/07/17.
@@ -15,12 +17,13 @@ package object Chess{
 }
 
 object launch extends JFXApp{
+  new Thread(){
+    override def run(): Unit = new ServerLauncher
+  } start()
+
   stage = new PrimaryStage{
     title.value = "Chess"
   }
   Chess.primaryStage = stage
   stage.scene = Chess.board.getDisplayScene
-
-  new WebRequest get()
-  new WebRequest post(Chess.board)
 }
