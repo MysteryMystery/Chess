@@ -23,7 +23,7 @@ class Board {
   @SerialVersionUID(123L)
   val pieces: ListBuffer[Piece] = ListBuffer[Piece]()
   val size = 8
-  var board: Array[Array[String]] = Array[Array[String]]()
+  private var board: Array[Array[String]] = Array[Array[String]]()
 
   val coordsFromEntry: TextField = new TextField(){
     id = "textEntry"

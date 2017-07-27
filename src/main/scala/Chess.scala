@@ -5,6 +5,7 @@ import web.WebRequest
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
+import scalafx.stage.WindowEvent
 import sys.process._
 
 /**
@@ -17,13 +18,18 @@ package object Chess{
 }
 
 object launch extends JFXApp{
-  new Thread(){
+  var serverThread = new Thread(){
     override def run(): Unit = new ServerLauncher
-  } start()
+  }
+  serverThread start()
 
   stage = new PrimaryStage{
     title.value = "Chess"
   }
   Chess.primaryStage = stage
   stage.scene = Chess.board.getDisplayScene
+
+  new WebRequest post(Chess.board)
+  new WebRequest get()
+
 }

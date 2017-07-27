@@ -9,6 +9,7 @@ import collection.JavaConverters._
 /**
   * Created by james on 13/07/17.
   */
+@SerialVersionUID(123L)
 class Pawn(override val colour: Char, override var cell: String) extends Piece{
   var moveCount = 0
 

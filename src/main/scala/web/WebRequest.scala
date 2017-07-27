@@ -8,7 +8,11 @@ import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
 
 import board.Board
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.Constructor
+import piece.Piece
 
+import scala.collection.mutable.ListBuffer
 import scalaj.http.{Http, HttpOptions}
 
 //https://stackoverflow.com/questions/11719373/doing-http-request-in-scala
@@ -18,17 +22,17 @@ class WebRequest {
   def get(url: String = serverIP,
           connectTimeout: Int = 5000,
           readTimeout: Int = 5000,
-          requestMethod: String = "GET") =
+          requestMethod: String = "GET"): ListBuffer[Piece] =
   {
     val connection = (new URL(url)).openConnection.asInstanceOf[HttpURLConnection]
     connection.setConnectTimeout(connectTimeout)
     connection.setReadTimeout(readTimeout)
     connection.setRequestMethod(requestMethod)
     val inputStream = connection.getInputStream
-    val content = io.Source.fromInputStream(inputStream).mkString
+    val content = new Yaml(new Constructor(classOf[Board])) load inputStream
     if (inputStream != null) inputStream.close
-    println(content)
-    content
+    println(content.asInstanceOf[Board].pieces)
+    content.asInstanceOf[Board].pieces
   }
 
   def post(board: Board, url: String = serverIP,
@@ -36,41 +40,14 @@ class WebRequest {
            readTimeout: Int = 5000,
            requestMethod: String = "POST") =
   {
-
     try{
       Http(url)
-        .postData(serialise(board.board))
+        .postData(new Yaml() dump board)
         .header("Content-Type", "text/plain")
         .header("Charset", "UTF-8")
-        //.option(HttpOptions.readTimeout(readTimeout))
-        //.option(HttpOptions.connTimeout(connectTimeout))
         .asString
     }catch{
       case e: java.net.SocketTimeoutException => ""
-    }
-  }
-
-  def serialise(x: Object): String = {
-    try {
-      var bo: ByteArrayOutputStream = new ByteArrayOutputStream()
-      var so: ObjectOutputStream = new ObjectOutputStream(bo)
-      so.writeObject(x)
-      so.flush()
-      bo.toString()
-    } catch {
-      case e: Exception => e.printStackTrace(); "Error in object serialisation."
-    }
-  }
-
-  def deDerialise(x: String): Array[Array[String]] = {
-    try {
-      val b = x.getBytes
-      val bi = new ByteArrayInputStream(b)
-      val si = new ObjectInputStream(bi)
-      si.readObject.asInstanceOf[Array[Array[String]]]
-    } catch {
-      case e: Exception =>
-        System.out.println(e); null
     }
   }
 }

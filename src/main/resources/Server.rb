@@ -2,8 +2,18 @@
 #Works by player posting board, then other user getting board
 
 require 'socket'
+require 'yaml'
 
-$BOARDFILE = "server/board.txt"
+$BOARDFILE = "server/board.yml"
+
+def loadYAML()
+  x = YAML.load_file($BOARDFILE)
+  puts x.inspect
+end
+
+def dumpYAML(content)
+  {:board => content.to_yaml}
+end
 
 def getBoard()
   content = ""

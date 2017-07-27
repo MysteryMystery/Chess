@@ -3,7 +3,8 @@ package piece
 /**
   * Created by james on 13/07/17.
   */
-trait Piece {
+@SerialVersionUID(123L)
+trait Piece extends Serializable{
   val colour: Char
   var cell: String
 
